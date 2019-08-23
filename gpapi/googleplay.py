@@ -330,7 +330,8 @@ class GooglePlayAPI(object):
                                     verify=ssl_verify,
                                     timeout=60,
                                     proxies=self.proxies_config)
-
+        if response.status_code != 200:
+            raise RequestError("Request Error: status code " + response.status_code)
         message = googleplay_pb2.ResponseWrapper.FromString(response.content)
         if message.commands.displayErrorMessage != "":
             raise RequestError(message.commands.displayErrorMessage)
